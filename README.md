@@ -23,4 +23,7 @@ profit
 
 
 # what it does (for now)
-- plays music from yt
+- plays music from yt (as of 1.0)
+- sends author avatar (as of 1.02)
+- clear music cache (as of 1.02
+
