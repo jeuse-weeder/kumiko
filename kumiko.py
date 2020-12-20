@@ -4,6 +4,9 @@ import discord
 import youtube_dl
 from discord.ext import commands
 import json
+import glob
+import os
+
 
 config_file = open('config.json', 'r')
 config = json.load(config_file)
@@ -53,7 +56,39 @@ class YTDLSource(discord.PCMVolumeTransformer):
         filename = data['url'] if stream else ytdl.prepare_filename(data)
         return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
+class Administration(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+    
+    @commands.command()
+    async def avatar(self, ctx):
+        """Sends the message's author's avatar"""
+        author = ctx.message.author.id
+        avatar_hash = ctx.message.author.avatar
+        avatar_url = "https://cdn.discordapp.com/avatars/{}/{}.png?size=512".format(author, avatar_hash)
+        async with ctx.typing():
+            await ctx.send(avatar_url)
+    
+    @commands.command()
+    async def clean_cache(self, ctx):
+        """Clear the music cache"""
+        
+        files = glob.glob("*.webm")
+        if (len(files) > 0):
+            await ctx.send("Found {} files.".format(len(files)))
+            for i in files:
+                os.remove(i)
+            await ctx.send("Cache cleared.")
+        else:
+            await ctx.send("There is nothing to delete.")
 
+
+
+
+        
+
+
+    
 class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -118,4 +153,6 @@ async def on_ready():
     
 
 bot.add_cog(Music(bot))
+bot.add_cog(Administration(bot))
 bot.run(config["token"])
+
