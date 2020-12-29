@@ -63,11 +63,17 @@ class Administration(commands.Cog):
     @commands.command()
     async def avatar(self, ctx):
         """Sends the message's author's avatar"""
-        author = ctx.message.author.id
-        avatar_hash = ctx.message.author.avatar
-        avatar_url = "https://cdn.discordapp.com/avatars/{}/{}.png?size=512".format(author, avatar_hash)
+        
         async with ctx.typing():
-            await ctx.send(avatar_url)
+            await ctx.send(ctx.message.author.avatar_url)
+
+    @commands.command()
+    async def furkan(self, ctx):
+        """sends furkan's mc server"""
+        await ctx.send("minecraft.furkanmudanyali.com")
+
+
+    
     
     @commands.command()
     async def clean_cache(self, ctx):
@@ -147,7 +153,7 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or(config["prefix"]),
 async def on_ready():
     print('Logged in as {0} ({0.id})'.format(bot.user))
     print('------')
-    game = discord.Game("{}help".format(config["prefix"]))
+    game = discord.Game("{}help | taking a fat shit".format(config["prefix"]))
     await bot.change_presence(status=discord.Status.do_not_disturb, activity=game)
 
     
